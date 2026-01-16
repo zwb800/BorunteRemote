@@ -22,6 +22,7 @@ class Borunte:
         received = json.loads(self.s.recv(1024).decode("UTF-8"))
         print ("Sent: {}".format(json_to_send))
         print ("Received: {}".format(received))
+        
     def query(self,q:str):
         self.send({      
         "queryAddr":[q]
@@ -30,6 +31,9 @@ class Borunte:
     def version(self):
         self.query("version")
 
+    def isMoving(self):
+        self.query("isMoving")
+
     def getAxisPosition(self,n:int):
         self.query(f"axis-{n}")
     
@@ -37,7 +41,7 @@ class Borunte:
         self.query(f"world-{n}")
 
     def setIO(self,boardID:int,pin:int,enable:bool):
-        #  "d1":输出板ID（0～3：IO板，4～6：M值，7：EUIO），"d2":输出点ID，"d3":输出状态（0：OFF，1：ON） 
+        #  "d1":输出板ID（0～3：IO板，4～6：M值(手控网口版不支持)，7：EUIO），"d2":输出点ID，"d3":输出状态（0：OFF，1：ON） 
         self.send({
              "cmdData":["modifyOutput",str(boardID),str(pin),"1" if enable else "0"]
         })
